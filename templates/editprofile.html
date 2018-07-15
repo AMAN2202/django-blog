@@ -1,0 +1,18 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <div class="row h-100 justify-content-center align-items-center" >
+
+        <div class="card shadow col-9">
+            {% load crispy_forms_tags %}
+
+            <form method="POST" class="form" enctype="multipart/form-data" novalidate>
+                <div class="mx-5">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" class="btn btn-success" value="save">
+                </div>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

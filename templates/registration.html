@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+
+    {% load crispy_forms_tags %}
+    <div class="card shadow m-4" style="opacity: 0.8;">
+        <form method="POST" class="empty-form" novalidate>
+            <div class="mx-5">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" class="btn btn-success mb-2" value="REGISTER">
+                <a CLASS="btn btn-primary mb-2" href="{% url 'accounts:login' %}">ALREADY HAVE ACCOUNT</a>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

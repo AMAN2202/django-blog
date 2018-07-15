@@ -1,0 +1,55 @@
+{% extends 'blog/base.html' %}
+{% block style %}
+    .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 550px;
+    margin: auto;
+    text-align: center;
+    font-family: arial;
+    }
+
+    .title {
+    color: grey;
+    font-size: 18px;
+    }
+
+
+
+    button:hover, a:hover {
+    opacity: 0.7;
+    }
+{% endblock %}
+{% block content %}
+    <div class="card mt-5"  data-aos="zoom-in"  data-aos-duration="3000">
+    {% if u.profile.pic %}
+        <img src="{{ u.profile.pic.url }}" alt="John" style="width:100%">
+    {% endif %}
+        <h1>{{ u|title }}</h1>
+        <p class="title">{{ u.profile.biography }}</p>
+        <div>
+            <i class="fas fa-map-marker-alt"></i> {{ u.profile.country }}</div>
+        {{ u.profile.city }}<br>
+
+
+        <div style="margin: 24px 0;font-size: 40px ">
+            {% if u.profile.twitter %}
+                <a href="{{ u.profile.twitter }}"><i class="fab fa-twitter"></i></a>
+            {% endif %}
+          {% if u.profile.google %}
+                <a href="{{ u.profile.google }}"><i class="fab fa-google-plus"></i></a>
+            {% endif %}
+            {% if u.profile.linkedin %}
+                <a href="{{ u.profile.linkedin }}"><i class="fab fa-linkedin"></i></a>
+            {% endif %}
+            {% if u.profile.facebook %}
+                <a href="{{ u.profile.facebook }}"><i class="fab fa-facebook-f"></i></a>
+            {% endif %}
+        </div>
+    </div>
+    {% if u == request.user %}
+        <center>
+            <a href="{% url 'accounts:edit_profile' %}" CLASS="btn btn-success">EDIT PROFILE</a>
+            <a href="{% url 'accounts:changepass' %}" CLASS="btn btn-danger">CHANGE PASSWORD</a>
+        </center>
+    {% endif %}
+{% endblock %}

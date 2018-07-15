@@ -1,0 +1,126 @@
+{% extends 'blog/base.html' %}
+
+
+{% block content %}
+    <div class="row my-4 box">
+        <div class="col-2 my-2" >
+            <div class="float-right">{% if post.author.profile.pic %}
+                <img class="rounded-circle" src="{{ post.author.profile.pic.url }}" width="120" height="120">
+            {% else %}
+                <i style="font-size: 100px;color: midnightblue;" class="fas fa-user-circle"></i>
+            {% endif %}
+            </div>
+        </div>
+        <div class="col-6"> By <b>{{ post.author|title }}</b>,<br>
+            {{ post.author.profile.biography }}
+            <br>
+            <a class="btn btn-primary" href="{% url 'accounts:view' id=post.author.id %}">View Profile</a>
+              <div style="margin: 24px 0;font-size: 20px ">
+            {% if post.author.profile.twitter %}
+                <a href="{{ post.author.profile.twitter }}"><i class="fab fa-twitter"></i></a>
+            {% endif %}
+          {% if post.author.profile.google %}
+                <a href="{{ post.author.profile.google }}"><i class="fab fa-google-plus"></i></a>
+            {% endif %}
+            {% if post.author.profile.linkedin %}
+                <a href="{{ post.author.profile.linkedin }}"><i class="fab fa-linkedin"></i></a>
+            {% endif %}
+            {% if post.author.profile.facebook %}
+                <a href="{{ post.author.profile.facebook }}"><i class="fab fa-facebook-f"></i></a>
+            {% endif %}
+        </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg bg-primary text-white">
+                    <h1>{{ post.title }}</h1>
+                    {% if post.publish_date %}
+                        <div class="date postdate text-dark" align="right">
+
+                            {{ post.publish_date|date:"d M Y" }}
+                        </div>
+                    {% else %}
+                        <a class="btn btn-success" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+
+                    <p class="card-text">{{ post.text|safe|linebreaksbr }}</p>
+
+                    {% if user == post.author %}
+                        <a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}"><span
+                                class="fas fa-pen-fancy"></span>Edit </a>
+                        <a class="btn btn-danger" href="{% url 'post_remove' pk=post.pk %}"><span
+                                class="fas fa-trash"></span>Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+
+    {% for comment in post.comments.all %}
+        <div class="row my-4 COL-8"  data-aos="{% if forloop.counter|divisibleby:2 %}fade-right{% else %}fade-left{% endif %}" data-aos-duration="1000">
+            <div class="col-2 my-auto">
+                <center>
+                    <div>{% if post.author.profile.pic %}
+                        <img class="rounded-circle" src="{{ post.author.profile.pic.url }}" width="100" height="100">
+                    {% else %}
+                        <i style="font-size: 100px;color: midnightblue;" class="fas fa-user-circle"></i>
+                    {% endif %}
+                    </div>
+                    <br>
+                    <div class="my-1"> {{ post.author }}</div>
+                  <div style="margin: 24px 0;font-size: 20px ">
+            {% if post.author.profile.twitter %}
+                <a href="{{ post.author.profile.twitter }}"><i class="fab fa-twitter"></i></a>
+            {% endif %}
+          {% if post.author.profile.google %}
+                <a href="{{ post.author.profile.google }}"><i class="fab fa-google-plus"></i></a>
+            {% endif %}
+            {% if post.author.profile.linkedin %}
+                <a href="{{ post.author.profile.linkedin }}"><i class="fab fa-linkedin"></i></a>
+            {% endif %}
+            {% if post.author.profile.facebook %}
+                <a href="{{ post.author.profile.facebook }}"><i class="fab fa-facebook-f"></i></a>
+            {% endif %}
+        </div>
+                </center>
+            </div>
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-header text-white  {% if user == comment.author %}bg bg-success  {% else %}bg bg-dark{% endif %}">
+                        {{ comment.author }}
+                    </div>
+                    <div class="card-body">
+                        <p class="lead"> {{ comment.text|safe }}</p>
+                        <p>{{ comment.create_date }}</p>
+                        {% if user == comment.author %}
+
+                            <a class="btn btn-danger" href="{% url 'comment_remove' pk=comment.pk %}"><span
+                                    class="fas fa-trash"></span>delete</a>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    <div class="container">
+        <h1>ADD COMMENT HERE</h1>
+        {% load crispy_forms_tags %}
+        <form method="POST" class="post-form col-10">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="save btn btn-primary">Post Comment</button>
+        </form>
+    </div>
+    <script>var editor = new MediumEditor('.editable');</script>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    <div class="row h-100 justify-content-center align-items-center my-5"   data-aos="zoom-in"  data-aos-duration="1000">
+        {% load crispy_forms_tags %}
+        <DIV class="col-5">
+            <div class="card shadow">
+
+                <div class="card-header">
+                    {% if heading %}{{ heading }}{% else %}{% if user.is_authenticated %} Login With Another Account
+                    {% else %}Login{% endif %}{% endif %}</div>
+                <form method="POST" class="form">
+                    <div class="mx-5">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <input type="submit" class="btn btn-primary mb-2" value="LOGIN">
+                        <a CLASS="btn btn-success mb-2" href="{% url 'accounts:register' %}">SIGN UP</a>
+                    </div>
+                </form>
+            </div>
+        </DIV>
+    </div>
+
+{% endblock %}

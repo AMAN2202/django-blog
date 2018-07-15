@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <title>Blog Project</title>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+ <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css"
+          media="screen" charset="utf-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+          integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.js"></script>
+    <script>
+        window.onload = my_code;
+
+        function my_code() {
+            $(".preloader").fadeOut("fast");
+        }
+    </script>
+    {# Custom CSS#}
+    <style>
+        {% block style %}
+
+        {% endblock %}
+
+        .preloader {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url('{% static 'loader.gif' %}') 50% 50% no-repeat white;
+            opacity: .8;
+        }
+
+    </style>
+
+
+<body>
+
+<nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon "></span>
+
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="{% url 'post_list' %}">My Tech blog</a>
+            <a class="nav-item nav-link" href="{% url 'about' %}">About</a></li>
+            <a class='nav-item nav-link' href="{% url 'accounts:login' %}"><span class="fas fa-user"></span></a>
+            {% if user.is_authenticated %}
+                <a class="nav-item nav-link mr-1" href="{% url 'post_draft_list' %}">DRAFTS</a>
+                <a class="nav-item nav-link" href="{% url 'post_new' %}">CREATE</a>
+                <a class="nav-item nav-link" href="{% url 'accounts:profile' %}">Profile</a>
+                <a class="nav-item nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+                <a class="nav-item nav-link" href="{% url 'accounts:changepass' %}">CHANE PASSWORD</a>
+
+                <a class="nav-item nav-link" href="{% url 'accounts:edit_profile' %}">EDIT PROFILE</a>
+
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+
+<div class="preloader"></div>
+<div class="mt-5 container"><br>
+    {% block content %}
+    {% endblock %}
+
+
+
+
+
+    {% block javascript %}
+    {% endblock %}
+<script>
+  AOS.init();
+</script>
+</body>
+</html>

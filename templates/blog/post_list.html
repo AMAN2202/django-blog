@@ -1,0 +1,77 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block style %}
+
+
+{% endblock %}
+{% block content %}
+    <div>
+
+
+    {% for post in posts %}
+        <div class="row my-4" data-aos="{% if forloop.counter|divisibleby:2 %}fade-right{% else %}fade-left{% endif %}" data-aos-duration="1000">
+            <div class="col-2 my-auto box">
+                <center>
+                    <div>{% if post.author.profile.pic %}
+                        <img class="rounded-circle" src="{{ post.author.profile.pic.url }}" width="100" height="100">
+                    {% else %}
+                        <i style="font-size: 100px;color: midnightblue;" class="fas fa-user-circle"></i>
+                    {% endif %}
+                    </div>
+                    <div class="my-3"> {{ post.author }}</div>
+                <div style="margin: 24px 0;font-size: 20px ">
+            {% if post.author.profile.twitter %}
+                <a href="{{ post.author.profile.twitter }}"><i class="fab fa-twitter"></i></a>
+            {% endif %}
+          {% if post.author.profile.google %}
+                <a href="{{ post.author.profile.google }}"><i class="fab fa-google-plus"></i></a>
+            {% endif %}
+            {% if post.author.profile.linkedin %}
+                <a href="{{ post.author.profile.linkedin }}"><i class="fab fa-linkedin"></i></a>
+            {% endif %}
+            {% if post.author.profile.facebook %}
+                <a href="{{ post.author.profile.facebook }}"><i class="fab fa-facebook-f"></i></a>
+            {% endif %}
+        </div>
+                </center>
+            </div>
+
+            <div class="col-8">
+                <div class="card box">
+
+                    <div class="card-body">
+                        <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+
+                        <a class="btn btn-primary text-centre" href="{% url 'post_detail' pk=post.pk %}">Read More</a>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% if posts.has_other_pages %}
+        <ul class="pagination">
+            {% if posts.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">&laquo;</a>
+                </li>
+            {% else %}
+                <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+            {% endif %}
+            {% for i in posts.paginator.page_range %}
+                {% if posts.number == i %}
+                    <li class="active page-item"><span class="disabled   page-link active">{{ i }} <span
+                            class="sr-only page-link">(current)</span></span></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if posts.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

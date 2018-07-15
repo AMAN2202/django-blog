@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    {% load crispy_forms_tags %}
+    <div>
+        <form method="POST" class="post-form m-2">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="save btn btn-success">Save</button>
+        </form>
+
+        <script>var editor = new MediumEditor('.editable');
+        $(document).ready(function() {
+  $('#id_text').summernote();
+});
+        </script>
+    </div>
+{% endblock %}
